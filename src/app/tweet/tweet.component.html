@@ -1,0 +1,93 @@
+<div class="container-fluid">
+  <div class="row">
+    <app-navbar></app-navbar>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <mat-card *ngIf="showMessageCard === false">
+        <h5 [innerHTML]="primaryMessage"></h5>
+      </mat-card>
+
+
+      <div class="loading-indicator" *ngIf="resourcesLoaded === false">
+        <mat-progress-spinner class="progressbar-margin" [diameter]="40" [color]="color" [mode]="mode" [value]="value">
+        </mat-progress-spinner>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row" style="height: calc(100vmin - 75px);overflow:auto;" id="scroller" infiniteScroll [infiniteScrollDistance]="3"
+    [infiniteScrollThrottle]="1" (scrolled)="getNextSet()" [scrollWindow]="false">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <div>
+        <form *ngIf="resourcesLoaded" (ngSubmit)="onSubmit()" [formGroup]="postTweetForm">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Post a tweet on <strong>#BInowplaying</strong> timeline.</mat-card-title>
+              <br/>
+            </mat-card-header>
+            <mat-form-field appearance="outline">
+              <mat-label>Youtube URL</mat-label>
+              <input matInput placeholder="Enter Youtube URL" type="url" formControlName="yturl" autocomplete="new-yturl">
+              <mat-icon matSuffix>link</mat-icon>
+            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;
+            <mat-form-field appearance="outline">
+              <mat-label>Comment</mat-label>
+              <input matInput placeholder="Enter Comments" type="text" formControlName="ytcomment" autocomplete="new-ytcomment">
+              <mat-icon matSuffix>comment</mat-icon>
+            </mat-form-field>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-raised-button [disabled]="!postTweetForm.valid || disablePostBtn" class="tweetbtn" matTooltip="Tweet to #BInowplaying"><img
+                src="../../assets/img/Twitter_Logo_Blue.png" style="width:85%;height:10%;"></button>
+                <mat-card-actions>
+                    <mat-radio-group>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<mat-radio-button value="all" (click)="tweetOptionFilter = 'all'" [checked]="true">Show All Tweets (<span [innerHtml]="allFilterCountMessage"></span>)</mat-radio-button>&nbsp;&nbsp;
+                        <mat-radio-button value="video" (click)="tweetOptionFilter = 'video'">Show only Youtube Video Tweets (<span [innerHtml]="videoFilterCountMessage"></span>)</mat-radio-button>
+                    </mat-radio-group>
+                </mat-card-actions>
+          </mat-card>
+        </form>
+        <div *ngFor="let tweet of searchTweets; trackBy: trackByFn">
+          <mat-card class="inner-mat-card" *ngIf="tweetOptionFilter == 'all' || tweet.is_video">
+            <div class="row">
+              <div class="col-md-8">
+                <mat-card-header>
+                  <div mat-card-avatar class="tc-header-image" [style.background-image]="getBackground(tweet.user.profile_image_url)"></div>
+                  <mat-card-title><a target="_blank" href="https://twitter.com/{{tweet.user.screen_name}}"><strong>{{tweet.user.name}}</strong></a><span
+                      class="lightcolor"> &middot; {{tweet.created_at | date: 'h:mm a'}}</span></mat-card-title>
+                  <mat-card-subtitle>@{{tweet.user.screen_name}}</mat-card-subtitle>
+
+                </mat-card-header>
+              </div>
+              <div class="col-md-4">
+                <a target="_blank" href="https://twitter.com/{{tweet.user.screen_name}}/status/{{tweet.id_str}}">
+                  <img class="tc-inner-logo" src="../../assets/img/Twitter_Logo_Blue.png" />
+                  </a>
+              </div>
+            </div>
+
+            <mat-card-content>
+              <p style="font-size: 14px;" [innerHtml]="replaceText(tweet.text)">
+
+              </p>
+              <p>Source : <span [innerHtml]="tweet.source"></span></p>
+              <div [innerHtml]="TweetDataProcessor(tweet)"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="row">
+                <div class="col-md-2 lightcolor"><button mat-button matTooltip="Reply"><i class="material-icons">reply</i></button></div>
+                <div class="col-md-2 lightcolor"><button mat-button matTooltip="Retweet"><i class="material-icons">repeat</i>&nbsp;{{tweet.retweet_count}}</button></div>
+                <div class="col-md-2 lightcolor"><button mat-button matTooltip="Favorite"><i class="material-icons">favorite_border</i>&nbsp;{{tweet.favorite_count}}</button></div>
+                <div class="col-md-2"><button *ngIf="tweet.is_video" mat-button matTooltip="Share to BINowPlaying" (click)="shareOnBINowPlaying(tweet);"><i class="material-icons">add</i></button></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3" style="margin-top:10px;"><strong>{{tweet.created_at | date: 'd-MMM-y'}}</strong></div>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+</div>
