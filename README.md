@@ -34,6 +34,10 @@ Built by using :
 
 and a lot. :)
 
+#Error Responses
+
+While using this application you might experience some API load error. This happened due to twitter. In case of massive API request or server load twitter sometimes return HTTP status 500[Internal Server Error]. So no worries about same this system automatically gonna handle them.
+
 
 #Twitter API Endpoints
 
