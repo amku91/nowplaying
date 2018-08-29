@@ -43,6 +43,8 @@ export class TweetComponent implements OnInit {
   allFilterCount: number = 0;
   videoFilterCountMessage: string = "tweet";
   allFilterCountMessage: string = "tweet";
+  nextAPIFailed:boolean = false;
+  refreshAPIFailed:boolean = false;
   apiMode: string;//API Mode Call Events : next,refresh
   /* General messages setting*/
   showMessageCard: boolean = false;
@@ -129,6 +131,8 @@ export class TweetComponent implements OnInit {
    */
   loadTweets(apiMode: string) {
     /* Load tweets */
+    this.nextAPIFailed = false;
+    this.refreshAPIFailed = false;
     this.apiMode = apiMode;
     if (!(this.latitude && this.longitude)) {
       this.latitude = 0;
@@ -137,7 +141,15 @@ export class TweetComponent implements OnInit {
     this.ts.getTweets(this.latitude, this.longitude, '100mi', this.tsinceID, this.tmaxID, apiMode).subscribe(data => {
       this.handleTweetsResponse(data);
     }, error => {
+      if(this.resourcesLoaded){
+      this.ts.showSnackBar("Unable to connect with twitter. Please try again.", "  ");
+      }else{
       this.primaryMessageSetter('Unable to connect with twitter. Please try again.');
+      }
+      if(apiMode == "next")
+      this.nextAPIFailed = true;
+      else if(apiMode == "refresh")
+      this.refreshAPIFailed = true;
     });
   }
 
@@ -276,7 +288,7 @@ export class TweetComponent implements OnInit {
       } else if (tweetData.entities && tweetData.entities.media) {
         tweetData.entities.media.forEach((dm, index) => {
           if (dm.type == "photo") {
-            innerHtml = this.ds.bypassSecurityTrustHtml('<img mat-card-image style="width:100%;max-size:500px;" src="' + dm.media_url + '" alt="" />');
+            innerHtml = this.ds.bypassSecurityTrustHtml('<img mat-card-image style="width:100%;max-size:500px;" src="' + dm.media_url_https + '" alt="" />');
           }
         });
       }

@@ -32,7 +32,7 @@ export class TwitterapiService {
     /* set basic configurations to codebird twitter client */
     this.cb.setConsumerKey(environment.twitterAPI, environment.twitterAPISecret);
     if(environment.twitterToken != "" && environment.twitterTokenSecret != "")
-    this.cb.setToken(environment.twitterToken, environment.twitterTokenSecret);
+     this.cb.setToken(environment.twitterToken, environment.twitterTokenSecret);
     /* Set API params */
     this.hashTag = environment.hashTag;
     this.resultCount = environment.resultCount;
@@ -158,13 +158,10 @@ export class TwitterapiService {
         this.apiName,//, geocode:"37.7749,122.4194,100mi", geocode:"37.7749,122.4194,100mi"
         paramsObj,
         function (reply, err) {
-
-          if ((err && err.error) || !reply) {
-            /*return  */
-            //this.showSnackBar("Sorry, unable to connect with twitter. Please try again or reload page.", "OK");
+          if ((err && err.error) || !reply.httpstatus || (reply.httpstatus != 200)) {
             observer.error(err);
           }
-          if (reply) {
+          if (reply && reply.httpstatus == 200) {
             observer.next(reply);
             observer.complete();
           }

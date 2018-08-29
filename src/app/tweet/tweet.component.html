@@ -48,12 +48,17 @@
                 </mat-card-actions>
           </mat-card>
         </form>
+        <div *ngIf="refreshAPIFailed">
+          <mat-card>
+              <h5>Refresh Tweets List Error.&nbsp;&nbsp;<a href="#" (click)="loadTweets('refresh')">Refresh Again</a></h5>
+              </mat-card>
+        </div>
         <div *ngFor="let tweet of searchTweets; trackBy: trackByFn">
           <mat-card class="inner-mat-card" *ngIf="tweetOptionFilter == 'all' || tweet.is_video">
             <div class="row">
               <div class="col-md-8">
                 <mat-card-header>
-                  <div mat-card-avatar class="tc-header-image" [style.background-image]="getBackground(tweet.user.profile_image_url)"></div>
+                  <div mat-card-avatar class="tc-header-image" [style.background-image]="getBackground(tweet.user.profile_image_url_https)"></div>
                   <mat-card-title><a target="_blank" href="https://twitter.com/{{tweet.user.screen_name}}"><strong>{{tweet.user.name}}</strong></a><span
                       class="lightcolor"> &middot; {{tweet.created_at | date: 'h:mm a'}}</span></mat-card-title>
                   <mat-card-subtitle>@{{tweet.user.screen_name}}</mat-card-subtitle>
@@ -86,6 +91,13 @@
             </mat-card-actions>
           </mat-card>
         </div>
+        <div *ngIf="nextAPIFailed">
+          <mat-card>
+              <h5>Load More Tweets Error.&nbsp;&nbsp;<a href="#" (click)="loadTweets('next')">Load Again</a></h5>
+              </mat-card>
+        </div>
+        <br/>
+        <br/>
       </div>
     </div>
     <div class="col-md-3"></div>
