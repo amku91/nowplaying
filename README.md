@@ -9,7 +9,7 @@ Throughout any development cycle, there are thousands of decisions that need to 
 The second reason for choosing angular is we need a framework on the frontend to build this. So angular 6 it is.
 
 
-#Tech Stacks
+# Tech Stacks
 
 Built by using :
 
@@ -21,7 +21,7 @@ Built by using :
 6. Angular Material Icons    -->> `https://material.io/tools/icons/?style=baseline`
 7. Twitter Resources    -->> `https://about.twitter.com/en_us/company/brand-resources.html`
 
-#Features
+# Features
 
 1. Auto infinite scroll
 2. Auto Refresh Tweets
@@ -34,12 +34,12 @@ Built by using :
 
 and a lot. :)
 
-#Error Responses
+# Error Responses
 
 While using this application you might experience some API load error. This happened due to twitter. In case of massive API request or server load twitter sometimes return HTTP status 500[Internal Server Error]. So no worries about same this system automatically gonna handle them.
 
 
-#Twitter API Endpoints
+# Twitter API Endpoints
 
 1. Standard Search API
 
@@ -52,7 +52,7 @@ While using this application you might experience some API load error. This happ
     Documentation : `https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/post-statuses-update.html`
 
 
-#Generated Through
+# Generated Through
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.2.
 
